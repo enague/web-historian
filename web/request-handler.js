@@ -32,7 +32,7 @@ exports.handleRequest = function (request, response) {
     fs.readFile(archive.paths.list, 'utf8', function(err, data) {
       if (err) { throw err; }
       if (data) {
-        storage = JSON.parse(data);
+        storage.push(JSON.parse(data));
       } 
       response.end();
     });
@@ -44,14 +44,14 @@ exports.handleRequest = function (request, response) {
       if (!storage.includes(site)) {
         //add data to archives
         storage.push(site);
-        fs.writeFile(archive.paths.list, JSON.stringify(storage), function(err) {
+        fs.writeFile(archive.paths.list, JSON.stringify(storage.join('\n')), function(err) {
           if (err) {throw err;}
+          
         });
         //give loading.html
         fs.readFile(path.join(__dirname, 'public', 'loading.html'), 'utf8', function(err, data) {
           if (err) {throw err};
           response.writeHead(200, {'Content-Type': 'text/html'});
-          archive.readListOfUrls()
           response.end(data);
         });
         //make new data file in sites folder

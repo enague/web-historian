@@ -29,7 +29,8 @@ exports.initialize = function(pathsObj) {
 exports.readListOfUrls = function(callback) {
   fs.readFile(exports.paths.list, 'utf8', function(err, data) {
     if (err) {throw err};
-    var urlInStorage = JSON.parse(data);
+    var urlInStorage = data.split('\n'); 
+    console.log('urlInStorage-------------', urlInStorage)
     return callback ? callback(urlInStorage) : urlInStorage;
   });
 };
@@ -38,16 +39,19 @@ exports.isUrlInList = function(url, callback) {
   //read the list
     //if url is in list
       //perform callback on url
+  done();
 };
 
 exports.addUrlToList = function(url, callback) {
   // write url into sites.txt file
   // perform callback on url
+  done();
 };
 
 exports.isUrlArchived = function(url, callback) {
   //check if unique file for url exists
     //perform callback which might be loading the unique URL
+  done();
 };
 
 exports.downloadUrls = function(urls) {
