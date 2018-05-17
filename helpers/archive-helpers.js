@@ -27,22 +27,30 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback) {
-  
+  fs.readFile(exports.paths.list, 'utf8', function(err, data) {
+    if (err) {throw err};
+    var urlInStorage = JSON.parse(data);
+    return callback ? callback(urlInStorage) : urlInStorage;
+  });
 };
 
 exports.isUrlInList = function(url, callback) {
+  //read the list
+    //if url is in list
+      //perform callback on url
 };
 
 exports.addUrlToList = function(url, callback) {
-  // callback(paths.list, JSON.stringify(url));
-
-  
+  // write url into sites.txt file
+  // perform callback on url
 };
 
 exports.isUrlArchived = function(url, callback) {
-  //read file to pull data
-  // 
+  //check if unique file for url exists
+    //perform callback which might be loading the unique URL
 };
 
 exports.downloadUrls = function(urls) {
+  // go to url
+  // save page 
 };

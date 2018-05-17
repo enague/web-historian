@@ -31,15 +31,16 @@ exports.handleRequest = function (request, response) {
     });
     fs.readFile(archive.paths.list, 'utf8', function(err, data) {
       if (err) { throw err; }
-      storage = JSON.parse(data);
+      if (data) {
+        storage = JSON.parse(data);
+      } 
+      response.end();
     });
 
   } else if (request.method === 'POST') {
-    console.log('this hit')
     request.on('data', (chunk) => {
       // if data is not in storage
       var site = chunk.toString().substring(4);
-      console.log('site: ', site)
       if (!storage.includes(site)) {
         //add data to archives
         storage.push(site);
@@ -48,9 +49,9 @@ exports.handleRequest = function (request, response) {
         });
         //give loading.html
         fs.readFile(path.join(__dirname, 'public', 'loading.html'), 'utf8', function(err, data) {
-          console.log('data: ', data);
           if (err) {throw err};
           response.writeHead(200, {'Content-Type': 'text/html'});
+          archive.readListOfUrls()
           response.end(data);
         });
         //make new data file in sites folder
