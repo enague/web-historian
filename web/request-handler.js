@@ -29,36 +29,36 @@ exports.handleRequest = function (request, response) {
       response.writeHead(200, {'Content-Type': 'text/html'});
       response.end(data);
     });
+    fs.readFile(archive.paths.list, 'utf8', function(err, data) {
+      if (err) { throw err; }
+      storage = JSON.parse(data);
+    });
 
   } else if (request.method === 'POST') {
     console.log('this hit')
-      request.on('data', (chunk) => {
-        // if data is not in storage
-        var site = chunk.toString().substring(4);
-        console.log('site: ', site)
-        if (!storage.includes(site)) {
-          //add data to archives
-          storage.push(site);
-          fs.writeFile(archive.paths.list, JSON.stringify(storage), function(err) {
-            if (err) {throw err;}
-          });
-          //give loading.html
-          fs.readFile(path.join(__dirname, 'public', 'loading.html'), 'utf8', function(err, data) {
-            console.log('data: ', data);
-            if (err) {throw err};
-            response.writeHead(200, {'Content-Type': 'text/html'});
-            response.end(data);
-          });
-          //make new data file in sites folder
+    request.on('data', (chunk) => {
+      // if data is not in storage
+      var site = chunk.toString().substring(4);
+      console.log('site: ', site)
+      if (!storage.includes(site)) {
+        //add data to archives
+        storage.push(site);
+        fs.writeFile(archive.paths.list, JSON.stringify(storage), function(err) {
+          if (err) {throw err;}
+        });
+        //give loading.html
+        fs.readFile(path.join(__dirname, 'public', 'loading.html'), 'utf8', function(err, data) {
+          console.log('data: ', data);
+          if (err) {throw err};
+          response.writeHead(200, {'Content-Type': 'text/html'});
+          response.end(data);
+        });
+        //make new data file in sites folder
 
-        }
-        console.log(chunk.toString())
-        archive.addUrlToList(chunk, fs.writeFile);
-
-        
+      }   
     // else if data is in archives
       //load data file
-      })
+    });
       
   } 
   
