@@ -30,22 +30,25 @@ exports.readListOfUrls = function(callback) {
   fs.readFile(exports.paths.list, 'utf8', function(err, data) {
     if (err) {throw err};
     var urlInStorage = data.split('\n'); 
-    console.log('urlInStorage-------------', urlInStorage)
     return callback ? callback(urlInStorage) : urlInStorage;
   });
 };
 
 exports.isUrlInList = function(url, callback) {
   //read the list
+  exports.readListOfUrls(function(urls) {
     //if url is in list
-      //perform callback on url
-  done();
+    return callback(urls.includes(url));
+  })
 };
 
 exports.addUrlToList = function(url, callback) {
-  // write url into sites.txt file
-  // perform callback on url
-  done();
+ 
+  exports.isUrlInList(url, function(exists) {
+    if (exists) {
+      callback(url)
+    } 
+  })
 };
 
 exports.isUrlArchived = function(url, callback) {
